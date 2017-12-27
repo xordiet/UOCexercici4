@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "734208748268",
+    "firebase_url": "https://llibres-uoc.firebaseio.com",
+    "project_id": "llibres-uoc",
+    "storage_bucket": "llibres-uoc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734208748268:android:8e4d2e5b73c95bbb",
+        "android_client_info": {
+          "package_name": "edu.uoc.pac1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734208748268-qmuj590lm09cf9p8405vf4pmvipnr7rc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoG3fi8u3jFEJ6OFMmj3dPKftI95hK2yQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
