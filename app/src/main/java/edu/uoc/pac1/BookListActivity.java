@@ -30,6 +30,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +80,7 @@ public class BookListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_book_list);
+
 
         // ============ INICI CODI A COMPLETAR ===============
         if (getIntent() != null && getIntent().getAction() != null && getIntent().hasExtra(BOOK_POSITION)) {
@@ -153,6 +164,54 @@ public class BookListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+
+        /**
+         *
+         *  afegir el menú lateral
+         *
+         */
+
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.el_juego_de_ender)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Jordi Borràs").withEmail("jo@jordiborras.cat").withIcon(getResources().getDrawable(R.drawable.ic_account_circle_black_24dp))
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Compartir amb altres apps");
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Copiar al portaretalls");
+        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(3).withName("Compartir al Whatsapp");
+
+        //Now create your drawer and pass the AccountHeader.Result
+        new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withAccountHeader(headerResult)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new DividerDrawerItem(),
+                        item3
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                        return true;
+                    }
+                })
+                .build();
+
     }
 
     private void downloadBooks() {
