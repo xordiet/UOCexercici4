@@ -1,13 +1,18 @@
 package edu.uoc.pac1;
 
 import android.app.NotificationManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,10 +46,13 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.uoc.pac1.model.BookContent;
+
+import static java.security.AccessController.getContext;
 
 /**
  * An activity representing a list of Books. This activity
@@ -187,7 +195,7 @@ public class BookListActivity extends AppCompatActivity {
                 })
                 .build();
 
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Compartir amb altres apps");
+        SecondaryDrawerItem item1 = new SecondaryDrawerItem().withIdentifier(1).withName("Compartir amb altres apps");
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Copiar al portaretalls");
         SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(3).withName("Compartir al Whatsapp");
 
@@ -207,11 +215,54 @@ public class BookListActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
+                        int premut = ((int) drawerItem.getIdentifier());
+                        //Toast.makeText(BookListActivity.this, "posició: "+premut, Toast.LENGTH_SHORT).show();
+                        if(premut == 1){
+                            //Toast.makeText(BookListActivity.this, "compartir apps: "+premut, Toast.LENGTH_SHORT).show();
+                            compartirApps();
+                        } else if (premut == 2){
+                            //Toast.makeText(BookListActivity.this, "copiar portaretalls: "+premut, Toast.LENGTH_SHORT).show();
+                            copiarPortaretalls();
+                        } else if (premut == 3){
+                            //Toast.makeText(BookListActivity.this, "compartir whats: "+premut, Toast.LENGTH_SHORT).show();
+                            compartirWhats();
+                        } else {
+                        }
                         return true;
                     }
                 })
                 .build();
 
+
+    }
+
+    private void compartirApps() {
+        Uri imageUri;
+        imageUri = Uri.parse("android.resource://" + getPackageName() + "/mipmap/" + "ic_launcher");
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Aplicació Android sobre llibres.");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        shareIntent.setType("image/jpeg");
+        startActivity(Intent.createChooser(shareIntent, "envia a..."));
+    }
+    private void copiarPortaretalls() {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("simple text", "Aplicació Android sobre llibres.");
+        clipboard.setPrimaryClip(clip);
+
+    }
+    private void compartirWhats() {
+        Uri imageUri;
+        imageUri = Uri.parse("android.resource://" + getPackageName() + "/mipmap/" + "ic_launcher");
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Aplicació Android sobre llibres.");
+        sendIntent.setType("text/plain");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        sendIntent.setType("image/jpeg");
+        sendIntent.setPackage("com.whatsapp");
+        startActivity(sendIntent);
     }
 
     private void downloadBooks() {
