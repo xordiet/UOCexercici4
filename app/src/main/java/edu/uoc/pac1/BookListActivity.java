@@ -139,12 +139,12 @@ public class BookListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab0);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Més info sobre l'autor ;)", Snackbar.LENGTH_LONG)
+                        .setAction("mesInfo", null).show();
             }
         });
 
@@ -273,7 +273,19 @@ public class BookListActivity extends AppCompatActivity {
         sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
         sendIntent.setType("image/*");
         sendIntent.setPackage("com.whatsapp");
-        startActivity(sendIntent);
+        try {
+            startActivity(sendIntent);
+        } catch (android.content.ActivityNotFoundException ex) {
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+            builder.setMessage("No tens WhatsApp instal·lat")
+                    .setPositiveButton("ups!", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .show();
+        }
     }
 
     public static class MostraAlertes extends DialogFragment {
