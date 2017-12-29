@@ -1,9 +1,12 @@
 package edu.uoc.pac1;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -12,6 +15,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -246,23 +250,46 @@ public class BookListActivity extends AppCompatActivity {
         shareIntent.setType("image/jpeg");
         startActivity(Intent.createChooser(shareIntent, "envia a..."));
     }
+
     private void copiarPortaretalls() {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("simple text", "Aplicació Android sobre llibres.");
         clipboard.setPrimaryClip(clip);
-
+        //crea el l'alerta
+        DialogFragment newFragment = new MostraAlertes();
+        newFragment.show(getSupportFragmentManager(), "copia");
     }
+
     private void compartirWhats() {
         Uri imageUri;
         imageUri = Uri.parse("android.resource://" + getPackageName() + "/mipmap/" + "ic_launcher");
+        //File imagePath = new File(Context.getFilesDir(), "imatges");
+        //File newFile = new File(imagePath, "defecte.jpg");
+        //Uri contentUri = getUriForFile(getContext(), "edu.uoc.pac1.fileprovider", newFile);
+        //imageUri = Uri.parse("content://edu.uoc.pac1.fileprovider/imatges/defecte.jpg");
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Aplicació Android sobre llibres.");
-        sendIntent.setType("text/plain");
         sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-        sendIntent.setType("image/jpeg");
+        sendIntent.setType("image/*");
         sendIntent.setPackage("com.whatsapp");
         startActivity(sendIntent);
+    }
+
+    public static class MostraAlertes extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("El text ha estat desat")
+                    .setPositiveButton("Gràcies", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // No fa res
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 
     private void downloadBooks() {

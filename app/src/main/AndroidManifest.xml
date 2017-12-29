@@ -46,6 +46,16 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+        <!-- per compartir la imatge al share -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="edu.uoc.pac1.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
