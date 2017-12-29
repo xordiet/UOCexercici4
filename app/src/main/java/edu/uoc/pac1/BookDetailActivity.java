@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * An activity representing a single Book detail screen. This
@@ -30,8 +33,14 @@ public class BookDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                WebView myWebView = (WebView) findViewById(R.id.webview);
+                myWebView.setVisibility(View.VISIBLE);
+                //WebSettings webSettings = myWebView.getSettings();
+                //webSettings.setJavaScriptEnabled(true);
+                myWebView.setWebViewClient(new WebViewClient());
+                myWebView.loadUrl("file:///android_asset/form.html");
+                findViewById(R.id.fab).setVisibility(View.GONE);
             }
         });
 
