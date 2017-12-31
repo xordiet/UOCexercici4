@@ -11,11 +11,13 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Set;
@@ -28,6 +30,8 @@ import java.util.Set;
  */
 public class BookDetailActivity extends AppCompatActivity {
 
+    private final static String TAG = "BookDetalilActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +43,8 @@ public class BookDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 WebView myWebView = (WebView) findViewById(R.id.webview);
                 myWebView.setVisibility(View.VISIBLE);
-                //WebSettings webSettings = myWebView.getSettings();
-                //webSettings.setJavaScriptEnabled(true);
-                //myWebView.setWebViewClient(new WebViewClient());
                 myWebView.setWebViewClient(new MyWebViewClient());
                 myWebView.loadUrl("file:///android_asset/form.html");
                 findViewById(R.id.fab).setVisibility(View.GONE);
@@ -78,14 +78,29 @@ public class BookDetailActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             String dades = new String(Uri.parse(url).getQuery().toString());
-            Uri uri = Uri.parse(url);
-            List<String> args = uri.getQueryParameters("&");
-            if (dades.equals("name=&num=&date=&buy=Envia")){
-                Snackbar.make(view, "has d'emplenar el formulari, gràcies", Snackbar.LENGTH_LONG)
+            String[] args = dades.split("&");
+            String[] nom = args[0].split("=");
+            String[] num = args[1].split("=");
+            String[] data = args[2].split("=");
+            if(nom.length==1){
+                Snackbar.make(view, "has d'emplenar el camp 'Nom'", Snackbar.LENGTH_LONG)
+                        .setAction("mesInfo", null).show();
+            } else if(num.length==1){
+                Snackbar.make(view, "has d'emplenar el camp 'Número tarjeta'", Snackbar.LENGTH_LONG)
+                        .setAction("mesInfo", null).show();
+            }if(data.length==1){
+                Snackbar.make(view, "has d'emplenar el camp 'Data caducitat'", Snackbar.LENGTH_LONG)
                         .setAction("mesInfo", null).show();
             } else {
-                Snackbar.make(view, dades, Snackbar.LENGTH_LONG)
-                        .setAction("mesInfo", null).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(BookDetailActivity.this);
+                builder.setMessage("La teva compra s'ha realitzat correctament")
+                        .setPositiveButton("iupi!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                findViewById(R.id.fab).setVisibility(View.VISIBLE);
+                                findViewById(R.id.webview).setVisibility(View.GONE);
+                            }
+                        })
+                        .show();
 
             }
             return true;

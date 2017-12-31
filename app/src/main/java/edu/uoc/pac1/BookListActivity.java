@@ -281,7 +281,7 @@ public class BookListActivity extends AppCompatActivity {
             builder.setMessage("No tens WhatsApp instal·lat")
                     .setPositiveButton("ups!", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
+                            // continue with..
                         }
                     })
                     .show();
