@@ -1,4 +1,7 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <cache-path name="name" path="imatges/" />
+    <files-path name="my_images" path="images/"/>
+    <cache-path name="imatges" path="imatges/" />
+    <external-cache-path name="external_files" path="."/>
+    <external-path name="external_files" path="."/>
 </paths>
 

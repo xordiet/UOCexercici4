@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -271,6 +273,8 @@ public class BookListActivity extends AppCompatActivity {
 
     private void compartirWhats() {
 
+        File file = new File(this.getFilesDir(), "imatge.png");
+
         Bitmap bmp = null;
         try {
             InputStream inputStream = getAssets().open("ic_launcher.png");
@@ -281,8 +285,10 @@ public class BookListActivity extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
+
         try {
-            FileOutputStream outputStream = getApplicationContext().openFileOutput("imatge.png", Context.MODE_PRIVATE);
+            FileOutputStream outputStream = new FileOutputStream(file, false);
+            //FileOutputStream outputStream = getApplicationContext().openFileOutput(file, Context.MODE_PRIVATE);
             outputStream.write(byteArray);
             outputStream.close();
         } catch (FileNotFoundException e) {
@@ -292,8 +298,18 @@ public class BookListActivity extends AppCompatActivity {
         }
 
         Uri imageUri;
-        //imageUri = Uri.parse("android.resource://" + getPackageName() + "/mipmap/" + "ic_launcher");
-        imageUri = Uri.parse(getApplicationContext().getFilesDir()+ "imatge.png");
+        //l'envia sense extensió i com a arxiu
+        imageUri = Uri.parse("android.resource://" + getPackageName() + "/mipmap/" + "ic_launcher");
+
+        //envia la imatge com a imatge prèviament guardada a caché o directori
+        //imageUri = Uri.parse(getApplicationContext().getFilesDir()+ "imatge.jpg");
+        //imageUri = Uri.parse(this.getFilesDir()+ "imatge.jpg");
+        //imageUri = Uri.parse(getCacheDir()+ "imatge.png");
+
+        //File imagePath = new File(getApplicationContext().getFilesDir(), "images");
+        //File newFile = new File(imagePath, "imatge.png");
+        //imageUri = FileProvider.getUriForFile(getApplicationContext(), "edu.uoc.pac1.fileprovider", newFile);
+
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Aplicació Android sobre llibres.");

@@ -88,7 +88,7 @@ public class BookDetailActivity extends AppCompatActivity {
             } else if(num.length==1){
                 Snackbar.make(view, "has d'emplenar el camp 'Número tarjeta'", Snackbar.LENGTH_LONG)
                         .setAction("mesInfo", null).show();
-            }if(data.length==1){
+            }else if(data.length==1){
                 Snackbar.make(view, "has d'emplenar el camp 'Data caducitat'", Snackbar.LENGTH_LONG)
                         .setAction("mesInfo", null).show();
             } else {
