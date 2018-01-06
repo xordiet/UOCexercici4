@@ -273,15 +273,17 @@ public class BookListActivity extends AppCompatActivity {
 
     private void compartirWhats() {
 
-        File file = new File(this.getFilesDir(), "imatge.png");
+        File file = new File(this.getFilesDir()+"/images/", "imatge.png");
 
         Bitmap bmp = null;
         try {
             InputStream inputStream = getAssets().open("ic_launcher.png");
             bmp = BitmapFactory.decodeStream(inputStream);
+            Log.d(TAG, bmp.toString());
         }catch (IOException io){
             io.printStackTrace();
         }
+        Log.d(TAG, bmp.toString());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
@@ -303,12 +305,10 @@ public class BookListActivity extends AppCompatActivity {
 
         //envia la imatge com a imatge prèviament guardada a caché o directori
         //imageUri = Uri.parse(getApplicationContext().getFilesDir()+ "imatge.jpg");
-        //imageUri = Uri.parse(this.getFilesDir()+ "imatge.jpg");
+        //imageUri = Uri.parse(this.getFilesDir() + "/images/" + "imatge.jpg");
+        //Log.d(TAG, imageUri.toString());
         //imageUri = Uri.parse(getCacheDir()+ "imatge.png");
 
-        //File imagePath = new File(getApplicationContext().getFilesDir(), "images");
-        //File newFile = new File(imagePath, "imatge.png");
-        //imageUri = FileProvider.getUriForFile(getApplicationContext(), "edu.uoc.pac1.fileprovider", newFile);
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
